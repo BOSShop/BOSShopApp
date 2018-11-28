@@ -1,0 +1,26 @@
+﻿<Window x:Class="ModernBOSShopApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModernBOSShopApp"
+        mc:Ignorable="d"
+        Title="BOSShop - Programmiert von Tammo Oberrauter" Height="450" Width="800" Icon="Icons/Logo.png" WindowState="Maximized" WindowStartupLocation="CenterScreen" MinWidth="800" MinHeight="450" FontFamily="MS Reference Sans Serif">
+    <Window.Background>
+        <VisualBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,112,112">
+            <VisualBrush.Visual>
+                <Image Source="Icons/Logo.png"></Image>
+            </VisualBrush.Visual>
+        </VisualBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="#BF6F6F6F" MouseDown="Border_MouseDown">
+            <TextBlock x:Name="ProductOfTheDayTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Foreground="White"/>
+        </Border>
+        <Frame x:Name="PageFrame" NavigationUIVisibility="Hidden" Grid.Row="1" Focusable="False"/>
+    </Grid>
+</Window>

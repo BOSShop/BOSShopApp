@@ -1,0 +1,55 @@
+﻿<local:BasePage x:Class="ModernBOSShopApp.Pages.ScanFastGamePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ModernBOSShopApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ScanFastGamePage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Border Padding="11" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#BF6F6F6F" CornerRadius="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="SECRET - Scan Fast" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36"/>
+                <ScrollViewer Grid.Row="1" Focusable="False">
+                    <StackPanel Focusable="False">
+                        <ComboBox x:Name="ProductsComboBox" IsEditable="True" Margin="0 2.5" KeyDown="ProductsComboBox_KeyDown"/>
+                        <TextBox x:Name="ScanAmountTextBox" Text="100" Margin="0 2.5" TextInput="ScanAmountTextBox_TextInput" TextChanged="ScanAmountTextBox_TextChanged"/>
+                        <Button x:Name="StartButton" Content="Start" Margin="0 2.5" Click="StartButton_Click"/>
+                        <Separator Height="12.5" Margin="0 2.5"/>
+                        <TextBox x:Name="CurrentNameTextBox" Margin="0 2.5" KeyDown="CurrentNameTextBox_KeyDown"/>
+                        <Separator Height="12.5" Margin="0 2.5"/>
+                        <TextBox x:Name="InputTextBox" Margin="0 2.5" KeyDown="InputTextBox_KeyDown"/>
+                        <TextBlock x:Name="ProgressTextBlock" Margin="0 2.5" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="TimeElapsedTextBlock" Margin="0 2.5" HorizontalAlignment="Center"/>
+                        <Separator Height="12.5" Margin="0 2.5"/>
+                        <Button x:Name="FinishButton" Content="Fertig" Click="FinishButton_Click" Margin="0 2.5"/>
+                        <Separator Height="12.5" Margin="0 2.5"/>
+                        <DataGrid x:Name="ResultDataGrid" MinHeight="125" Margin="0 2.5" CanUserAddRows="True" AutoGenerateColumns="False" FontFamily="MS Reference Sans Serif"/>
+                        <Separator Height="12.5" Margin="0 2.5"/>
+                        <Button x:Name="BackToMenuButton" Content="Zurück zum Hauptmenü" Click="BackToMenuButton_Click" Margin="0 2.5"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</local:BasePage>

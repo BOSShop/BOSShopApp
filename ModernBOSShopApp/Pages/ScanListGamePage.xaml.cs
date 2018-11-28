@@ -80,7 +80,7 @@ namespace ModernBOSShopApp.Pages
 
                 Random rdm = new Random();
 
-                for(int i = 0; i < (productCount-65); i++)
+                for(int i = 0; i < (productCount); i++)
                 {
                     int index = rdm.Next(0, left.Count);
 

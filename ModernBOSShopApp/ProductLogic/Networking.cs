@@ -3,6 +3,11 @@ using Germanen.GUNet.Attributes.Default;
 using Germanen.GUNet.Client;
 using Germanen.GUNet.Settings.Client;
 using Germanen.GUNet.Utils;
+using Germanen.GUNet.Utils.Client;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Threading;
 
@@ -15,60 +20,93 @@ namespace ModernBOSShopApp.ProductLogic
 
         public Networking()
         {
-            GUN.Init();
-
-            AttributeManager = new AttributeManager();
-
-            Client = new GUNetClient(new GUNClientSettings(AttributeManager, "1.0", IPAddress.Parse("127.0.0.1"), 8888, false, true));
-
-            AttributeManager.AddClass(this);
-
-            new Thread(() =>
+            try
             {
-                while (Client != null)
-                {
-                    try
-                    {
-                        if (!Client.Connected)
-                        {
-                            if (!Client.Connecting)
-                            {
-                                try
-                                {
-                                    Client.ConnectToServer();
-                                }
-                                catch
-                                {
+                GUN.Init();
 
+                AttributeManager = new AttributeManager();
+
+                Client = new GUNetClient(new GUNClientSettings(AttributeManager, "1.0", IPAddress.Parse("127.0.0.1"), 8888, false, true));
+
+                AttributeManager.AddClass(this);
+
+                new Thread(() =>
+                {
+                    while (Client != null)
+                    {
+                        try
+                        {
+                            if (!Client.Connected)
+                            {
+                                if (!Client.Connecting)
+                                {
+                                    try
+                                    {
+                                        Client.ConnectToServer();
+                                    }
+                                    catch
+                                    {
+
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            Client.HandleNetworkingData();
-                        }
-
-                        MainWindow.Instance.Dispatcher.Invoke(() =>
-                        {
-                            if (Client != null && Client.Connected)
-                                MainWindow.Instance.Title = "BOSShop - Verbunden";
                             else
-                                MainWindow.Instance.Title = "BOSShop";
-                        });
-                    }
-                    catch
-                    {
+                            {
+                                Client.HandleNetworkingData();
+                            }
 
+                            MainWindow.Instance.Dispatcher.Invoke(() =>
+                            {
+                                if (Client != null && Client.Connected)
+                                    MainWindow.Instance.Title = "BOSShop - Verbunden";
+                                else
+                                    MainWindow.Instance.Title = "BOSShop";
+                            });
+                        }
+                        catch
+                        {
+
+                        }
+                        Thread.Sleep(1);
                     }
-                    Thread.Sleep(1);
-                }
-            }).Start();
+                }).Start();
+            }
+            catch
+            {
+
+            }
         }
 
         public void CloseConnection()
         {
             Client.DisconnectFromServer();
             Client = null;
+        }
+
+        [OnPackage("SUpdate")]
+        public void OnUpdate(PackageFromServerData data)
+        {
+            WebClient client = new WebClient();
+
+            string downloadPath = MainWindow.Instance.fileManager.GetPath("Download");
+
+            MainWindow.Instance.fileManager.CreateFolderIfNotExists(downloadPath);
+
+            string zipFile = MainWindow.Instance.fileManager.GetPath("Update.zip");
+
+            client.DownloadFile("http://127.0.0.1:8889/Update.zip", zipFile);
+
+            ZipFile.ExtractToDirectory(zipFile, downloadPath);
+
+            File.Delete(zipFile);
+
+            string[] executables = Directory.GetFiles(downloadPath, "*.exe", SearchOption.AllDirectories);
+
+            if (executables.Length == 1)
+            {
+                Process.Start(executables[0]);
+                Environment.Exit(0);
+            }
         }
     }
 }

@@ -23,13 +23,13 @@ namespace ModernBOSShopApp.ProductLogic
             CreateFileIfNotExists(GetPath("Save.json"));
         }
 
-        private void CreateFolderIfNotExists(string path)
+        public void CreateFolderIfNotExists(string path)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
 
-        private void CreateFileIfNotExists(string path)
+        public void CreateFileIfNotExists(string path)
         {
             if (!File.Exists(path))
                 File.Create(path).Close();

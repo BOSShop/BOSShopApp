@@ -2,6 +2,7 @@
 using Germanen.GUNet.Attributes.Default;
 using Germanen.GUNet.Client;
 using Germanen.GUNet.Settings.Client;
+using Germanen.GUNet.Utils;
 using System.Net;
 using System.Threading;
 
@@ -14,6 +15,8 @@ namespace ModernBOSShopApp.ProductLogic
 
         public Networking()
         {
+            GUN.Init();
+
             AttributeManager = new AttributeManager();
 
             Client = new GUNetClient(new GUNClientSettings(AttributeManager, "1.0", IPAddress.Parse("127.0.0.1"), 8888, false, true));
@@ -30,13 +33,28 @@ namespace ModernBOSShopApp.ProductLogic
                         {
                             if (!Client.Connecting)
                             {
-                                Client.ConnectToServer();
+                                try
+                                {
+                                    Client.ConnectToServer();
+                                }
+                                catch
+                                {
+
+                                }
                             }
                         }
                         else
                         {
                             Client.HandleNetworkingData();
                         }
+
+                        MainWindow.Instance.Dispatcher.Invoke(() =>
+                        {
+                            if (Client != null && Client.Connected)
+                                MainWindow.Instance.Title = "BOSShop - Verbunden";
+                            else
+                                MainWindow.Instance.Title = "BOSShop";
+                        });
                     }
                     catch
                     {
@@ -45,6 +63,12 @@ namespace ModernBOSShopApp.ProductLogic
                     Thread.Sleep(1);
                 }
             }).Start();
+        }
+
+        public void CloseConnection()
+        {
+            Client.DisconnectFromServer();
+            Client = null;
         }
     }
 }

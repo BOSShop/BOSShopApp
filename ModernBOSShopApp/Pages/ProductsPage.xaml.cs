@@ -21,10 +21,11 @@ namespace ModernBOSShopApp.Pages
             ProductsDataGrid.Columns.Add(new DataGridTextColumn { Header = "Kategorie", Binding = new Binding("Category"), MinWidth = 120 });
             ProductsDataGrid.Columns.Add(new DataGridTextColumn { Header = "Anzahl", Binding = new Binding("Count"), MinWidth = 60 });
 
-            Binding priceBinding = new Binding("Price");
-
-            priceBinding.StringFormat = "C2";
-            priceBinding.ConverterCulture = new CultureInfo("de-DE");
+            Binding priceBinding = new Binding("Price")
+            {
+                StringFormat = "C2",
+                ConverterCulture = new CultureInfo("de-DE")
+            };
 
             ProductsDataGrid.Columns.Add(new DataGridTextColumn { Header = "Preis", Binding = priceBinding, MinWidth = 60 });
 

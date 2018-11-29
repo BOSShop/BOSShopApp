@@ -25,6 +25,8 @@ namespace ModernBOSShopApp
         private bool hasSetDay;
         private DayOfWeek lastDay;
 
+        private Networking networking;
+
         public MainWindow()
         {
             Instance = this;
@@ -50,8 +52,12 @@ namespace ModernBOSShopApp
 
             LoadPageAsync("MainMenuPage");
 
-            Timer updater = new Timer();
-            updater.Interval = 1000;
+            networking = new Networking();
+
+            Timer updater = new Timer
+            {
+                Interval = 1000
+            };
             updater.Elapsed += UpdateTimer_Tick;
             updater.Start();
         }
@@ -144,6 +150,12 @@ namespace ModernBOSShopApp
             {
                 LoadProductOfTheDay();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
+            networking.CloseConnection();
         }
     }
 }

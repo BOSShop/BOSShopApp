@@ -1,4 +1,5 @@
 ﻿using Germanen.GUNet.Attributes;
+using Germanen.GUNet.Attributes.Client;
 using Germanen.GUNet.Attributes.Default;
 using Germanen.GUNet.Client;
 using Germanen.GUNet.Settings.Client;
@@ -83,9 +84,24 @@ namespace ModernBOSShopApp.ProductLogic
             Client = null;
         }
 
+        [OnConnectionEstablished]
+        public void OnConnectionEstablished()
+        {
+            string downloadPath = MainWindow.Instance.fileManager.GetPath("Download");
+
+            if (Directory.Exists(downloadPath))
+            {
+                Directory.Delete(downloadPath, true);
+                Client.Send("CUpdateFinished");
+            }
+        }
+
+
         [OnPackage("SUpdate")]
         public void OnUpdate(PackageFromServerData data)
         {
+            data.Respond(Client, "CUpdateStarted");
+
             WebClient client = new WebClient();
 
             string downloadPath = MainWindow.Instance.fileManager.GetPath("Download");
